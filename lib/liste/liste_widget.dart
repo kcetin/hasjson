@@ -28,56 +28,45 @@ class _ListeWidgetState extends State<ListeWidget> {
               return Center(child: CircularProgressIndicator());
             }
             final gridViewHastaneResponse = snapshot.data;
-            return Builder(
-              builder: (context) {
-                final veri = (getJsonField(gridViewHastaneResponse, r'$.name')
-                            ?.toList() ??
-                        [])
-                    .take(30)
-                    .toList();
-                return GridView.builder(
-                  padding: EdgeInsets.zero,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 1.6,
-                  ),
-                  scrollDirection: Axis.vertical,
-                  itemCount: veri.length,
-                  itemBuilder: (context, veriIndex) {
-                    final veriItem = veri[veriIndex];
-                    return Card(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      color: Color(0xFFF5F5F5),
-                      child: Card(
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        color: Color(0xFFF5F5F5),
-                        child: FutureBuilder<dynamic>(
-                          future: hastaneCall(
-                            name:
-                                getJsonField(gridViewHastaneResponse, r'$.name')
-                                    .toString(),
-                          ),
-                          builder: (context, snapshot) {
-                            // Customize what your widget looks like when it's loading.
-                            if (!snapshot.hasData) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                            final textHastaneResponse = snapshot.data;
-                            return Text(
-                              getJsonField(veriItem, r'$.name').toString(),
-                              style: FlutterFlowTheme.bodyText1.override(
-                                fontFamily: 'Poppins',
-                              ),
-                            );
-                          },
-                        ),
+            return GridView(
+              padding: EdgeInsets.zero,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 1.6,
+              ),
+              scrollDirection: Axis.vertical,
+              children: [
+                Card(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  color: Color(0xFFF5F5F5),
+                  child: Card(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    color: Color(0xFFF5F5F5),
+                    child: FutureBuilder<dynamic>(
+                      future: hastaneCall(
+                        name: getJsonField(gridViewHastaneResponse, r'$.name')
+                            .toString(),
                       ),
-                    );
-                  },
-                );
-              },
+                      builder: (context, snapshot) {
+                        // Customize what your widget looks like when it's loading.
+                        if (!snapshot.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        final textHastaneResponse = snapshot.data;
+                        return Text(
+                          getJsonField(gridViewHastaneResponse, r'$.name')
+                              .toString(),
+                          style: FlutterFlowTheme.bodyText1.override(
+                            fontFamily: 'Poppins',
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                )
+              ],
             );
           },
         ),
